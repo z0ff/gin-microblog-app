@@ -1,0 +1,44 @@
+version: '3'
+services:
+  sveltekit:
+    container_name: web
+    build: ./microblog-web # SvelteKit アプリケーションのディレクトリ
+    ports:
+      - '5173:5173' # SvelteKit の開発サーバーのポート
+    volumes:
+      - ./microblog-web/:/app # 開発時のホットリロード用
+      - /app/node_modules
+    depends_on:
+      - gin # Gin が起動するまで待つ
+    # restart: on-failure
+
+  gin:
+    container_name: backend
+    build: ./microblog-backend # Gin アプリケーションのディレクトリ
+    ports:
+      - '3000:3000' # Gin のサーバーのポート
+    volumes:
+      - ./microblog-backend/:/app
+    depends_on:
+      - mysql # MySQL が起動するまで待つ
+    environment:
+      - MYSQL_HOST=mysql # MySQL のホスト名
+      - MYSQL_USER=user # MySQL のユーザー名
+      - MYSQL_PASSWORD=password # MySQL のパスワード
+      - MYSQL_DATABASE=mydatabase # MySQL のデータベース名
+
+  mysql:
+    container_name: db
+    image: mysql:latest
+    ports:
+      - '3306:3306' # MySQL のポート
+    environment:
+      - MYSQL_ROOT_PASSWORD=password # MySQL の root パスワード
+      - MYSQL_DATABASE=mydatabase # MySQL のデータベース名
+      - MYSQL_USER=user # MySQL のユーザー名
+      - MYSQL_PASSWORD=password # MySQL のパスワード
+    volumes:
+      - mysql-data:/var/lib/mysql # データ永続化用
+
+volumes:
+  mysql-data: # データ永続化用
