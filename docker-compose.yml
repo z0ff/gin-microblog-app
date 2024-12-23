@@ -7,9 +7,11 @@ services:
       - '5173:5173' # SvelteKit の開発サーバーのポート
     volumes:
       - ./microblog-web/:/app # 開発時のホットリロード用
-      - /app/node_modules
+      - node_modules:/app/node_modules # node_modulesをボリューム側に配置することにより速度改善
     depends_on:
       - gin # Gin が起動するまで待つ
+    command: bash -c "npm run dev"
+    tty: true
     # restart: on-failure
 
   gin:
@@ -26,6 +28,8 @@ services:
       - MYSQL_USER=user # MySQL のユーザー名
       - MYSQL_PASSWORD=password # MySQL のパスワード
       - MYSQL_DATABASE=mydatabase # MySQL のデータベース名
+    command: bash -c "go mod tidy && air"
+    tty: true
 
   mysql:
     container_name: db
@@ -41,4 +45,5 @@ services:
       - mysql-data:/var/lib/mysql # データ永続化用
 
 volumes:
-  mysql-data: # データ永続化用
+  node_modules: # node_modulesをボリューム側に配置することにより速度改善
+  mysql-data: # DB永続化用
