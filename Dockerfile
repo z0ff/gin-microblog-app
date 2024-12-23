@@ -11,10 +11,10 @@ RUN apt install -y git
 WORKDIR /app
 
 # ファイルのコピー
-COPY . .
+# COPY . .
 
 # 依存パッケージのダウンロード
-RUN go mod download
+# RUN go mod download
 
 # ビルド
 #RUN go build -o /go/bin/hello-go
@@ -24,4 +24,4 @@ RUN go install github.com/air-verse/air@latest
 
 # コンテナ起動時のコマンド
 #ENTRYPOINT ["/go/bin/hello-go"]
-CMD ["air"]
+# CMD ["air"]
