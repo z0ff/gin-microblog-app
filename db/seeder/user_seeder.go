@@ -9,8 +9,10 @@ import (
 func UserSeeder(db *gorm.DB) {
 	users := []model.User{
 		{
-			Name:  "John",
-			Email: "john@example.com",
+			Name:        "john123",
+			DisplayName: "John",
+			Email:       "john@example.com",
+			Password:    "password",
 		},
 	}
 

@@ -1,16 +1,13 @@
 package main
 
 import (
-	"fmt"
-	"log/slog"
-	"net/http"
-
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"net/http"
 
-	// "github.com/z0ff/microblog-backend/controller"
 	"github.com/z0ff/microblog-backend/db"
 	"github.com/z0ff/microblog-backend/db/model"
+	"github.com/z0ff/microblog-backend/handler"
 )
 
 type Post struct {
@@ -44,42 +41,14 @@ func main() {
 	}))
 
 	engine.GET("/", func(c *gin.Context) {
-		// c.JSON(http.StatusOK, gin.H{
-		// 	"message": "Hello, World!",
-		// })
-
 		tx := db_conn.Preload("User").Begin()
-		tx.Find(&posts)
+		tx.Order("created_at desc").Find(&posts)
+		//db_conn.Find(&posts)
 
 		c.JSON(http.StatusOK, posts)
-		// c.JSON(http.StatusOK, users)
+		//c.JSON(http.StatusOK, users)
 	})
-	// engine.POST("/post", controller.PostController.Create)
-
-	engine.POST("/post", func(c *gin.Context) {
-		// user_id, _ := strconv.ParseUint(c.PostForm("user_id"), 10, 64)
-		// content := c.PostForm("content")
-
-		// post := model.Post{UserID: uint(user_id), Content: content}
-
-		var post Post
-		c.BindJSON(&post)
-
-		buf := make([]byte, 2048)
-		n, _ := c.Request.Body.Read(buf)
-		b := string(buf[0:n])
-		fmt.Println(b)
-
-		slog.Debug("debug", "post", post)
-
-		// db := db.GetConnection()
-		db_conn.Create(&post)
-
-		c.JSON(http.StatusOK, gin.H{
-			"user_id": post.UserID,
-			"content": post.Content,
-		})
-	})
+	engine.POST("/post", handler.PostCreate)
 
 	engine.Run(":3000")
 }

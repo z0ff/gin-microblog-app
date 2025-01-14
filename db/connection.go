@@ -47,6 +47,8 @@ func NewDatabase() (*Database, error) {
 
 	seeder.UserSeeder(db_conn)
 
+	connection = db_conn
+
 	return &Database{Connection: db_conn}, nil
 
 }
