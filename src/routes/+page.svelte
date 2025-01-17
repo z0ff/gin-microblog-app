@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { strToDate, utcToLocalTime } from "$lib/datetime";
 
 
 	let postContent: HTMLTextAreaElement;
 	let userId = 1;
 
 	let postButtonEnabled = false;
+
+	let postCharsCount = 0;
 
 	onMount(() => {
 		postContent = document.getElementById('post-content') as HTMLTextAreaElement;
@@ -46,7 +49,7 @@
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ user_id: userId, content: postContent.value }),
+			body: JSON.stringify({ user_id: userId, content: postContent.value.trim() }),
 		}).catch(console.error);
 
 		if (res) {
@@ -55,31 +58,44 @@
 			console.error(res);
 		}
 
+		postContent.value = "";
+		countPostContentChars();
+
 		posts = await getPostsJson();
 	};
 
 	const toggleEnabledPostButton = () => {
-		postButtonEnabled = postContent.value.length > 0;
+		postButtonEnabled = postCharsCount > 0 && postCharsCount <= 500 && postContent.value.trim().length;
 	};
+
+	const countPostContentChars = () => {
+		postCharsCount = postContent.value.length;
+	}
+
+	const onInput = () => {
+		countPostContentChars();
+		toggleEnabledPostButton();
+	}
 
 
 </script>
 
-<h1>microblog</h1>
-
-<textarea on:input={toggleEnabledPostButton} rows="10" cols="50" placeholder="type something here" id="post-content"></textarea>
+<textarea on:input={onInput} rows="10" cols="50" placeholder="type something here" id="post-content"></textarea>
+<span>{postCharsCount}/500</span>
 <button on:click={submitPost} type="button" id="post-submit" disabled={!postButtonEnabled}>submit</button>
 
 {#await posts}
 	<p>loading...</p>
 {:then data}
+	<div class="flex flex-col gap-y-1 max-w-3xl">
 	{#each data as post}
-		<div>
-			<p>by {post.User.DisplayName}</p>
-			<p>{post.CreatedAt}</p>
+		<div class="border-solid border-2 border-sky-500">
+			<p class="font-bold">{post.User.DisplayName}</p>
+			<p>{strToDate(post.CreatedAt)}</p>
 			<p>{post.Content}</p>
 		</div>
 	{/each}
+	</div>
 {:catch error}
 	<p style="color: red">{error.message}</p>
 {/await}
