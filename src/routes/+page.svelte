@@ -32,6 +32,9 @@
 			headers: {
 				'Content-Type': 'application/json',
 			},
+			// fetch APIはデフォルトでセッション情報を送信しないため、
+			// 明示的に送信するように設定する
+			credentials: "include"
 		}).catch(console.error);
 
 		if (res) {
