@@ -45,7 +45,11 @@ func NewDatabase() (*Database, error) {
 		return nil, err
 	}
 
-	seeder.UserSeeder(db_conn)
+	// Seeder
+	var count int64
+	if db_conn.Model(&model.User{}).Count(&count); count == 0 {
+		seeder.UserSeeder(db_conn)
+	}
 
 	connection = db_conn
 

@@ -3,16 +3,18 @@ package seeder
 import (
 	"github.com/z0ff/microblog-backend/db/model"
 	"gorm.io/gorm"
+	"github.com/z0ff/microblog-backend/utils/crypto"
 )
 
 // UserSeeder はUserテーブルの初期データを挿入する
 func UserSeeder(db *gorm.DB) {
+	pw_hash, _ := crypto.HashPassword("password")
 	users := []model.User{
 		{
 			Name:        "john123",
 			DisplayName: "John",
 			Email:       "john@example.com",
-			Password:    "password",
+			Password:    pw_hash,
 		},
 	}
 
