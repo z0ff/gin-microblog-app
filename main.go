@@ -6,11 +6,12 @@ import (
 	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"os"
 
 	"github.com/z0ff/microblog-backend/db"
 	"github.com/z0ff/microblog-backend/db/model"
 	"github.com/z0ff/microblog-backend/handler"
-	//"github.com/z0ff/microblog-backend/utils/session"
+	"github.com/z0ff/microblog-backend/utils/session"
 )
 
 type Post struct {
@@ -26,7 +27,12 @@ func main() {
 	engine := gin.Default()
 
 	// セッションの設定
-	store, err := redis.NewStore(10, "tcp", "redis:6379", "", []byte("secret"))
+	store, err := redis.NewStore(
+		10,
+		"tcp",
+		os.Getenv("REDIS_HOST")+":"+os.Getenv("REDIS_PORT"),
+		os.Getenv("REDIS_PASSWORD"),
+		[]byte(os.Getenv("REDIS_SECRET")))
 	if err != nil {
 		panic("failed to connect redis: " + err.Error())
 	}
@@ -47,29 +53,34 @@ func main() {
 
 	engine.GET("/", func(c *gin.Context) {
 		var posts []model.Post
+		var followings []uint
 
 		// ユーザーIDをセッションから取得
-		//userID := session.GetUserID(c)
-		session := sessions.Default(c)
-		userID := session.Get("user_id")
+		userID := session.GetUserID(c)
 		// ユーザーIDが取得できない場合、認証エラーを返す
-		if userID == nil {
+		if userID == 0 {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"error": "Unauthorized",
 			})
 			return
 		}
 
+		// フォローしているユーザーのIDを取得
+		// TODO: フォロー機能実装後に実装
+		//db_conn.Table("follows").Select("follow_id").Where("user_id = ?", userID).Find(&followings)
+		followings = append(followings, userID)
+
 		tx := db_conn.Preload("User").Begin()
-		tx.Order("created_at desc").Find(&posts)
-		//db_conn.Find(&posts)
+		tx.Order("created_at desc").Where("user_id in ?", followings).Find(&posts)
 
 		c.JSON(http.StatusOK, posts)
-		//c.JSON(http.StatusOK, users)
 	})
 	engine.POST("/post", handler.PostCreate)
 	engine.POST("/login", handler.Login)
 	engine.POST("/signup", handler.Signup)
+	engine.POST("/logout", handler.Logout)
+	engine.GET("/is_logged_in", handler.GetIsLoggedIn)
+	engine.GET("/me", handler.GetMe)
 
 	engine.Run(":3000")
 }

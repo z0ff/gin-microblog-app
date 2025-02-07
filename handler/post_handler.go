@@ -5,6 +5,7 @@ package handler
 import (
 	"github.com/z0ff/microblog-backend/db"
 	"github.com/z0ff/microblog-backend/db/model"
+	"github.com/z0ff/microblog-backend/utils/session"
 	"log/slog"
 	"net/http"
 
@@ -14,12 +15,22 @@ import (
 // type PostHandler struct{}
 
 type Post struct {
-	UserID  uint   `json:"user_id"`
+	//UserID  uint   `json:"user_id"`
 	Content string `json:"content"`
 }
 
 // func (pc PostHandler) Create(c *gin.Context) {
 func PostCreate(c *gin.Context) {
+	var userId uint
+	userId = session.GetUserID(c)
+
+	if userId == 0 {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Unauthorized",
+		})
+		return
+	}
+
 	var post Post
 	c.BindJSON(&post)
 
@@ -28,12 +39,12 @@ func PostCreate(c *gin.Context) {
 	db_conn := db.GetConnection()
 	//db_conn.Create(&post)
 	db_conn.Create(&model.Post{
-		UserID:  post.UserID,
+		UserID:  userId,
 		Content: post.Content,
 	})
 
 	c.JSON(http.StatusOK, gin.H{
-		"user_id": post.UserID,
+		"user_id": userId,
 		"content": post.Content,
 	})
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/z0ff/microblog-backend/utils/crypto"
+	session_mgr "github.com/z0ff/microblog-backend/utils/session"
 )
 
 // type LoginHandler struct{}
@@ -51,6 +52,22 @@ func Login(c *gin.Context) {
 }
 
 func Logout(c *gin.Context) {
+	// 未ログインの場合、認証エラーを返す
+	userID := session_mgr.GetUserID(c)
+	if userID == 0 {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Unauthorized",
+		})
+		return
+	}
+
+	// セッションの取得
+	session := sessions.Default(c)
+	// セッションからユーザーIDを削除
+	session.Delete("user_id")
+	// セッションの保存
+	session.Save()
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Logout success",
 	})
@@ -71,5 +88,40 @@ func Signup(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Signup success",
+	})
+}
+
+func GetIsLoggedIn(c *gin.Context) {
+	userID := session_mgr.GetUserID(c)
+	if userID == 0 {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Unauthorized",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Authorized",
+		"user_id": userID,
+	})
+}
+
+func GetMe(c *gin.Context) {
+	userID := session_mgr.GetUserID(c)
+	if userID == 0 {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Unauthorized",
+		})
+		return
+	}
+
+	db_conn := db.GetConnection()
+	var user model.User
+	db_conn.Where("id = ?", userID).First(&user)
+
+	c.JSON(http.StatusOK, gin.H{
+		"user_id":      user.ID,
+		"name":         user.Name,
+		"display_name": user.DisplayName,
 	})
 }
