@@ -23,11 +23,16 @@ services:
       - ./microblog-backend/:/app
     depends_on:
       - mysql # MySQL が起動するまで待つ
+      - redis # Redis が起動するまで待つ
     environment:
       - MYSQL_HOST=mysql # MySQL のホスト名
       - MYSQL_USER=user # MySQL のユーザー名
       - MYSQL_PASSWORD=password # MySQL のパスワード
       - MYSQL_DATABASE=mydatabase # MySQL のデータベース名
+      - REDIS_HOST=redis # Redis のホスト名
+      - REDIS_PORT=6379 # Redis のポート
+      - REDIS_PASSWORD= # Redis のパスワード
+      - REDIS_SECRET=secret # Redis のシークレットキー
     command: bash -c "go mod tidy && air"
     tty: true
 
@@ -43,6 +48,12 @@ services:
       - MYSQL_PASSWORD=password # MySQL のパスワード
     volumes:
       - mysql-data:/var/lib/mysql # データ永続化用
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - '6379:6379' # Redis のポート
 
 volumes:
   node_modules: # node_modulesをボリューム側に配置することにより速度改善
