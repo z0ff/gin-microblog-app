@@ -13,10 +13,16 @@
     });
 
     const onClickLoginButton = async () => {
-        await login(email.value.trim(), password.value.trim());
+        const result = await login(email.value.trim(), password.value.trim());
 
         email.value = "";
         password.value = "";
+
+        if (result === false) {
+            alert("login failed");
+        } else {
+            location.href = "/";
+        }
     };
 
     const onInput = () => {
@@ -30,7 +36,7 @@
 
 <h1>login</h1>
 <div>
-    <input type="text" id="form-email" placeholder="e-mail" on:input={onInput} />
-    <input type="password" id="form-password" placeholder="password" on:input={onInput} />
-    <button type="button" on:click={onClickLoginButton} disabled="{!loginButtonEnabled}">login</button>
+    <input type="text" id="form-email" placeholder="e-mail" on:input={onInput} class="input" />
+    <input type="password" id="form-password" placeholder="password" on:input={onInput} class="input" />
+    <button type="button" on:click={onClickLoginButton} disabled="{!loginButtonEnabled}" class="btn btn-primary">login</button>
 </div>

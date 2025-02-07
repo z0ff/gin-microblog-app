@@ -4,7 +4,6 @@
 
 
 	let postContent: HTMLTextAreaElement;
-	let userId = 1;
 
 	let postButtonEnabled = false;
 
@@ -52,7 +51,10 @@
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ user_id: userId, content: postContent.value.trim() }),
+			// fetch APIはデフォルトでセッション情報を送信しないため、
+			// 明示的に送信するように設定する
+			credentials: "include",
+			body: JSON.stringify({ content: postContent.value.trim() }),
 		}).catch(console.error);
 
 		if (res) {
@@ -83,19 +85,21 @@
 
 </script>
 
-<textarea on:input={onInput} rows="10" cols="50" placeholder="type something here" id="post-content"></textarea>
+<textarea on:input={onInput} rows="10" cols="50" placeholder="type something here" id="post-content" class="textarea textarea-bordered textarea-primary"></textarea>
 <span>{postCharsCount}/500</span>
-<button on:click={submitPost} type="button" id="post-submit" disabled={!postButtonEnabled}>submit</button>
+<button on:click={submitPost} type="button" id="post-submit" disabled={!postButtonEnabled} class="btn btn-primary">submit</button>
 
 {#await posts}
 	<p>loading...</p>
 {:then data}
 	<div class="flex flex-col gap-y-1 max-w-3xl">
 	{#each data as post}
-		<div class="border-solid border-2 border-sky-500">
-			<p class="font-bold">{post.User.DisplayName}</p>
-			<p>{strToDate(post.CreatedAt)}</p>
-			<p>{post.Content}</p>
+		<div class="card card-bordered bg-base-50 shadow-lg">
+			<div class="card-body">
+				<p class="font-bold">{post.User.DisplayName}</p>
+				<p>{strToDate(post.CreatedAt)}</p>
+				<p class="whitespace-pre-wrap">{post.Content}</p>
+			</div>
 		</div>
 	{/each}
 	</div>

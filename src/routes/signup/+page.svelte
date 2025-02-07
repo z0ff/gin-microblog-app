@@ -18,12 +18,18 @@
 
     const onClickSignupButton = async () => {
         await signup(name.value.trim(), displayname.value.trim(), email.value.trim(), password.value.trim());
-        await login(email.value.trim(), password.value.trim());
+        const result = await login(email.value.trim(), password.value.trim());
 
         name.value = "";
         displayname.value = "";
         email.value = "";
         password.value = "";
+
+        if (result === false) {
+            alert("login failed");
+        } else {
+            location.href = "/";
+        }
     };
 
     const onInput = () => {
@@ -38,9 +44,9 @@
 <h1>Signup</h1>
 <div>
 
-    <input type="text" id="form-name" placeholder="name" on:input={onInput} />
-    <input type="text" id="form-displayname" placeholder="displayname" on:input={onInput} />
-    <input type="text" id="form-email" placeholder="e-mail" on:input={onInput} />
-    <input type="password" id="form-password" placeholder="password" on:input={onInput} />
-    <button type="button" on:click={onClickSignupButton} disabled="{!loginButtonEnabled}">signup</button>
+    <input type="text" id="form-name" placeholder="name" on:input={onInput} class="input" />
+    <input type="text" id="form-displayname" placeholder="displayname" on:input={onInput} class="input" />
+    <input type="text" id="form-email" placeholder="e-mail" on:input={onInput} class="input" />
+    <input type="password" id="form-password" placeholder="password" on:input={onInput} class="input" />
+    <button type="button" on:click={onClickSignupButton} disabled="{!loginButtonEnabled}" class="btn btn-primary">signup</button>
 </div>
