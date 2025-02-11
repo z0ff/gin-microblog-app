@@ -75,7 +75,8 @@ func main() {
 
 		c.JSON(http.StatusOK, posts)
 	})
-	engine.POST("/post", handler.PostCreate)
+	engine.POST("/post", handler.CreatePost)
+	engine.GET("/search", handler.SearchPost)
 	engine.POST("/login", handler.Login)
 	engine.POST("/signup", handler.Signup)
 	engine.POST("/logout", handler.Logout)

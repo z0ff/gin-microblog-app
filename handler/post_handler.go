@@ -20,7 +20,7 @@ type Post struct {
 }
 
 // func (pc PostHandler) Create(c *gin.Context) {
-func PostCreate(c *gin.Context) {
+func CreatePost(c *gin.Context) {
 	var userId uint
 	userId = session.GetUserID(c)
 
@@ -47,4 +47,28 @@ func PostCreate(c *gin.Context) {
 		"user_id": userId,
 		"content": post.Content,
 	})
+}
+
+func SearchPost(c *gin.Context) {
+	// 検索クエリを取得
+	query := c.Query("query")
+
+	var posts []model.Post
+	//var followings []uint
+
+	userId := session.GetUserID(c)
+
+	if userId == 0 {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Unauthorized",
+		})
+		return
+	}
+	//followings = append(followings, userId)
+
+	db_conn := db.GetConnection()
+	tx := db_conn.Preload("User").Begin()
+	tx.Order("created_at desc").Where("content LIKE ?", "%"+query+"%").Find(&posts)
+
+	c.JSON(http.StatusOK, posts)
 }
