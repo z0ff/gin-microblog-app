@@ -4,6 +4,7 @@
     import { onMount } from 'svelte';
     import { logout, getMe } from "$lib/auth";
     import type { User } from "$lib/types";
+    import { searchQueryStore } from "$lib/stores";
 
     let isLoggedin = false;
     let userInfo: Promise<User | null> | undefined = undefined;
@@ -44,11 +45,30 @@
         await logout();
         location.href = "/login";
     };
+
+    // 検索ボタンをクリックしたときの処理
+    const onClickSearchButton = () => {
+        const query = (document.getElementById('search-query') as HTMLInputElement).value;
+        searchQueryStore.set(query);
+        location.href = `/search?query=${query}`;
+    };
 </script>
 
 <div class="navbar">
     <div class="flex-1">
         <a href="/" class="btn btn-ghost text-xl">microblog</a>
+    </div>
+    <div class="flex-1">
+        <div class="join">
+            <div>
+                <div>
+                    <input id="search-query" class="input input-bordered join-item" placeholder="Search" value="{$searchQueryStore}" />
+                </div>
+            </div>
+            <div class="indicator">
+                <button on:click={onClickSearchButton} class="btn join-item">Search</button>
+            </div>
+        </div>
     </div>
     <div class="flex-none">
         {#await userInfo}

@@ -1,4 +1,4 @@
-FROM node:22-bookworm-slim
+FROM --platform=linux/amd64 node:22-bookworm-slim
 LABEL authors="z0ff"
 
 # Enable pnpm
