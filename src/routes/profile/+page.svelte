@@ -1,15 +1,13 @@
 <script lang="ts">
-    import { page } from '$app/stores';
     import { strToDate } from "$lib/datetime";
-    import { searchQueryStore} from "$lib/stores";
+    import {getMe} from "$lib/auth";
 
     let posts: Promise<any>;
-    // 検索クエリパラメータ
-    const query = $page.url.searchParams.get('query')
-    searchQueryStore.set(query);
 
-    const getPostsJson = async (query: string | null) => {
-        const res = await fetch('http://localhost:3000/search?query=' + query, {
+    const userdata = getMe();
+
+    const getPostsJson = async () => {
+        const res = await fetch('http://localhost:3000/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -25,9 +23,18 @@
             return { error: res.statusText };
         }
     };
-    posts = getPostsJson(query);
+    posts = getPostsJson();
     console.log(posts);
 </script>
+
+{#await userdata}
+    <p>loading...</p>
+{:then data}
+    <p>{data?.display_name}</p>
+    <p>{data?.email}</p>
+{:catch error}
+    <p style="color: red">{error.message}</p>
+{/await}
 
 {#await posts}
     <p>loading...</p>

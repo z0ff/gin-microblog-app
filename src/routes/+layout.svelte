@@ -4,10 +4,11 @@
     import { onMount } from 'svelte';
     import { logout, getMe } from "$lib/auth";
     import type { User } from "$lib/types";
-    import { searchQueryStore } from "$lib/stores";
+    import { isLoggedInStore, userStore, searchQueryStore } from "$lib/stores";
 
     let isLoggedin = false;
-    let userInfo: Promise<User | null> | undefined = undefined;
+    // let userInfo: Promise<User | null> | undefined = undefined;
+    let userInfo: User | null = null;
 
     onMount(async () => {
         // ログインしているかどうかを確認する
@@ -33,11 +34,14 @@
             console.log('status: ', res.status);
         }).catch(console.error);
 
+        isLoggedInStore.set(isLoggedin);
+
         console.log('isLoggedin: ', isLoggedin);
 
         // ログインしている場合はユーザー情報を取得する
         if (isLoggedin) {
-            userInfo = getMe();
+            userInfo = await getMe();
+            userStore.set(userInfo);
         }
     });
 
@@ -49,7 +53,7 @@
     // 検索ボタンをクリックしたときの処理
     const onClickSearchButton = () => {
         const query = (document.getElementById('search-query') as HTMLInputElement).value;
-        searchQueryStore.set(query);
+        // searchQueryStore.set(query);
         location.href = `/search?query=${query}`;
     };
 </script>
@@ -62,7 +66,7 @@
         <div class="join">
             <div>
                 <div>
-                    <input id="search-query" class="input input-bordered join-item" placeholder="Search" value="{$searchQueryStore}" />
+                    <input id="search-query" class="input input-bordered join-item" placeholder="Search" bind:value="{$searchQueryStore}" />
                 </div>
             </div>
             <div class="indicator">
@@ -74,6 +78,9 @@
         {#await userInfo}
             <p>loading...</p>
         {:then data}
+            {#if data === null}
+                <a href="/login" class="btn btn-ghost">login</a>
+            {:else}
             <div class="dropdown dropdown-end">
                 <div tabindex="0" role="button" class="btn btn-ghost">{data?.display_name}</div>
                 <ul tabindex="0" role="menu" class="shadow menu dropdown-content bg-base-100 rounded-box w-52">
@@ -89,6 +96,7 @@
                     </li>
                 </ul>
             </div>
+            {/if}
         {:catch error}
             <p>{error}</p>
         {/await}

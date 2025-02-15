@@ -84,3 +84,26 @@ export const getMe = async (): Promise<User | null> => {
         return null;
     }
 }
+
+export const getUser = async (username: string): Promise<User | null> => {
+    const res = await fetch(`http://localhost:3000/user/${username}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: "include"
+    }).catch(console.error);
+
+    if (res) {
+        const data = await res.json();
+        if (res.ok) {
+            return data;
+        } else {
+            console.error(data);
+            return null;
+        }
+    } else {
+        console.error(res);
+        return null;
+    }
+}
