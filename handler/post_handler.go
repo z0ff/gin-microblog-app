@@ -3,9 +3,11 @@ package handler
 // package post_handler
 
 import (
+	"errors"
 	"github.com/z0ff/microblog-backend/db"
 	"github.com/z0ff/microblog-backend/db/model"
 	"github.com/z0ff/microblog-backend/utils/session"
+	"gorm.io/gorm"
 	"log/slog"
 	"net/http"
 
@@ -69,6 +71,35 @@ func SearchPost(c *gin.Context) {
 	db_conn := db.GetConnection()
 	tx := db_conn.Preload("User").Begin()
 	tx.Order("created_at desc").Where("content LIKE ?", "%"+query+"%").Find(&posts)
+
+	c.JSON(http.StatusOK, posts)
+}
+
+func GetPostsOfUser(c *gin.Context) {
+	username := c.Param("username")
+
+	// ユーザーの存在確認
+	var user model.User
+	db_conn := db.GetConnection()
+	result := db_conn.Where("name = ?", username).First(&user)
+	// ユーザーが存在しない場合、404エラーを返す
+	// その他のエラーの場合、500エラーを返す
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "User not found",
+		})
+		return
+	} else if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Internal Server Error",
+		})
+		return
+	}
+
+	var posts []model.Post
+
+	tx := db_conn.Preload("User").Begin()
+	tx.Order("created_at desc").Where("user_id = ?", user.ID).Find(&posts)
 
 	c.JSON(http.StatusOK, posts)
 }

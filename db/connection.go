@@ -40,7 +40,7 @@ func NewDatabase() (*Database, error) {
 		panic("failed to connect database")
 	}
 
-	err = db_conn.AutoMigrate(&model.User{}, &model.Post{})
+	err = db_conn.AutoMigrate(&model.User{}, &model.Post{}, &model.Follow{})
 	if err != nil {
 		return nil, err
 	}

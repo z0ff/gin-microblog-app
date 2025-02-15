@@ -66,8 +66,7 @@ func main() {
 		}
 
 		// フォローしているユーザーのIDを取得
-		// TODO: フォロー機能実装後に実装
-		//db_conn.Table("follows").Select("follow_id").Where("user_id = ?", userID).Find(&followings)
+		db_conn.Table("follows").Select("following_id").Where("user_id = ?", userID).Find(&followings)
 		followings = append(followings, userID)
 
 		tx := db_conn.Preload("User").Begin()
@@ -82,6 +81,9 @@ func main() {
 	engine.POST("/logout", handler.Logout)
 	engine.GET("/is_logged_in", handler.GetIsLoggedIn)
 	engine.GET("/me", handler.GetMe)
+	engine.GET("/user/:username", handler.GetUserInfo)
+	engine.GET("/post/:username", handler.GetPostsOfUser)
+	engine.POST("/follow/:username", handler.FollowUser)
 
 	engine.Run(":3000")
 }

@@ -1,13 +1,13 @@
 package handler
 
 import (
-	"github.com/z0ff/microblog-backend/db"
-	"github.com/z0ff/microblog-backend/db/model"
-	"net/http"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/z0ff/microblog-backend/db"
+	"github.com/z0ff/microblog-backend/db/model"
 	"github.com/z0ff/microblog-backend/utils/crypto"
 	session_mgr "github.com/z0ff/microblog-backend/utils/session"
+	"net/http"
 )
 
 // type LoginHandler struct{}
@@ -103,25 +103,5 @@ func GetIsLoggedIn(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Authorized",
 		"user_id": userID,
-	})
-}
-
-func GetMe(c *gin.Context) {
-	userID := session_mgr.GetUserID(c)
-	if userID == 0 {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"error": "Unauthorized",
-		})
-		return
-	}
-
-	db_conn := db.GetConnection()
-	var user model.User
-	db_conn.Where("id = ?", userID).First(&user)
-
-	c.JSON(http.StatusOK, gin.H{
-		"user_id":      user.ID,
-		"name":         user.Name,
-		"display_name": user.DisplayName,
 	})
 }
