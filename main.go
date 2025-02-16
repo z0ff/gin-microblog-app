@@ -66,7 +66,7 @@ func main() {
 		}
 
 		// フォローしているユーザーのIDを取得
-		db_conn.Table("follows").Select("following_id").Where("user_id = ?", userID).Find(&followings)
+		db_conn.Table("follows").Select("following_id").Where("user_id = ? AND deleted_at is null", userID).Find(&followings)
 		followings = append(followings, userID)
 
 		tx := db_conn.Preload("User").Begin()
@@ -84,6 +84,10 @@ func main() {
 	engine.GET("/user/:username", handler.GetUserInfo)
 	engine.GET("/post/:username", handler.GetPostsOfUser)
 	engine.POST("/follow/:username", handler.FollowUser)
+	engine.POST("/unfollow/:username", handler.UnFollowUser)
+	engine.GET("/followers/:username", handler.GetFollowers)
+	engine.GET("/followings/:username", handler.GetFollowings)
+	engine.GET("/is_following/:username", handler.GetIsFollowing)
 
 	engine.Run(":3000")
 }
