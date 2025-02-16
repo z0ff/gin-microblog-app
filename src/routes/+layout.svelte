@@ -85,7 +85,7 @@
                 <div tabindex="0" role="button" class="btn btn-ghost">{data?.display_name}</div>
                 <ul tabindex="0" role="menu" class="shadow menu dropdown-content bg-base-100 rounded-box w-52">
                     <li>
-                        <a>profile</a>
+                        <a href="/@{userInfo?.name}">profile</a>
                     </li>
 <!--                    クライアント側設定画面は一旦実装しない-->
 <!--                    <li>-->

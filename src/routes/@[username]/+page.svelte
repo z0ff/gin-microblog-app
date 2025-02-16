@@ -55,19 +55,36 @@
         const userdata = await user;
         const meActionsElem = document.getElementById('me-actions');
         const notmeActionsElem = document.getElementById('notme-actions');
+        const followingActionsElem = document.getElementById('following-actions');
 
         if (me === null || userdata === null) {
             return;
         }
 
-        if (meActionsElem === null || notmeActionsElem === null) {
+        if (meActionsElem === null || notmeActionsElem === null || followingActionsElem === null) {
             return;
         }
 
         if (me.name === userdata.name) {
             meActionsElem.classList.remove('hidden');
         } else {
-            notmeActionsElem.classList.remove('hidden');
+            const isFollowing = await fetch(`http://localhost:3000/is_following/${userdata.name}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // fetch APIはデフォルトでセッション情報を送信しないため、
+                // 明示的に送信するように設定する
+                credentials: "include"
+            }).then(res => res.json()).catch(console.error);
+
+            console.log(isFollowing.is_following);
+
+            if (isFollowing.is_following) {
+                followingActionsElem.classList.remove('hidden');
+            } else {
+                notmeActionsElem.classList.remove('hidden');
+            }
         }
     });
 
@@ -91,6 +108,44 @@
         } else {
             console.error(res);
         }
+
+        const followingActionsElem = document.getElementById('following-actions');
+        const notmeActionsElem = document.getElementById('notme-actions');
+        if (followingActionsElem === null || notmeActionsElem === null) {
+            return;
+        }
+        followingActionsElem.classList.remove('hidden');
+        notmeActionsElem.classList.add('hidden');
+    };
+
+    const onClickUnFollowButton = async () => {
+        const userdata = await user;
+        if (userdata === null) {
+            return;
+        }
+        const res = await fetch(`http://localhost:3000/unfollow/${userdata.name}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            // fetch APIはデフォルトでセッション情報を送信しないため、
+            // 明示的に送信するように設定する
+            credentials: "include"
+        }).catch(console.error);
+
+        if (res) {
+            console.log(await res.json());
+        } else {
+            console.error(res);
+        }
+
+        const followingActionsElem = document.getElementById('following-actions');
+        const notmeActionsElem = document.getElementById('notme-actions');
+        if (followingActionsElem === null || notmeActionsElem === null) {
+            return;
+        }
+        followingActionsElem.classList.add('hidden');
+        notmeActionsElem.classList.remove('hidden');
     };
 </script>
 
@@ -103,6 +158,9 @@
     </div>
     <div id="notme-actions" class="hidden">
         <button on:click={onClickFollowButton} class="btn btn-primary">Follow</button>
+    </div>
+    <div id="following-actions" class="hidden">
+        <button on:click={onClickUnFollowButton} class="btn btn-primary">UnFollow</button>
     </div>
 {:catch error}
     <p style="color: red">{error.message}</p>

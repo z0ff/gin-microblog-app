@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { strToDate, utcToLocalTime } from "$lib/datetime";
+	import Post from "$lib/Components/Post.svelte";
 
 
 	let postContent: HTMLTextAreaElement;
@@ -94,13 +95,7 @@
 {:then data}
 	<div class="flex flex-col gap-y-1 max-w-3xl">
 	{#each data as post}
-		<div class="card card-bordered bg-base-50 shadow-lg">
-			<div class="card-body">
-				<p class="font-bold">{post.User.DisplayName}</p>
-				<p>{strToDate(post.CreatedAt)}</p>
-				<p class="whitespace-pre-wrap">{post.Content}</p>
-			</div>
-		</div>
+		<Post post={post} />
 	{/each}
 	</div>
 {:catch error}
