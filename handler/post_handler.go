@@ -7,6 +7,7 @@ import (
 	"github.com/z0ff/microblog-backend/db"
 	"github.com/z0ff/microblog-backend/db/model"
 	"github.com/z0ff/microblog-backend/utils/session"
+	"github.com/z0ff/microblog-backend/service"
 	"gorm.io/gorm"
 	"log/slog"
 	"net/http"
@@ -55,7 +56,6 @@ func SearchPost(c *gin.Context) {
 	// 検索クエリを取得
 	query := c.Query("query")
 
-	var posts []model.Post
 	//var followings []uint
 
 	userId := session.GetUserID(c)
@@ -67,15 +67,27 @@ func SearchPost(c *gin.Context) {
 		return
 	}
 	//followings = append(followings, userId)
+	//
+	//db_conn := db.GetConnection()
+	//tx := db_conn.Preload("User").Begin()
+	//tx.Order("created_at desc").Where("content LIKE ?", "%"+query+"%").Find(&posts)
 
-	db_conn := db.GetConnection()
-	tx := db_conn.Preload("User").Begin()
-	tx.Order("created_at desc").Where("content LIKE ?", "%"+query+"%").Find(&posts)
+	posts, _ := service.SearchPostsByString(userId, query)
 
 	c.JSON(http.StatusOK, posts)
 }
 
 func GetPostsOfUser(c *gin.Context) {
+	var userId uint
+	userId = session.GetUserID(c)
+
+	if userId == 0 {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Unauthorized",
+		})
+		return
+	}
+
 	username := c.Param("username")
 
 	// ユーザーの存在確認
@@ -96,10 +108,82 @@ func GetPostsOfUser(c *gin.Context) {
 		return
 	}
 
-	var posts []model.Post
-
-	tx := db_conn.Preload("User").Begin()
-	tx.Order("created_at desc").Where("user_id = ?", user.ID).Find(&posts)
+	posts, _ := service.GetPosts(userId, user.ID)
 
 	c.JSON(http.StatusOK, posts)
+}
+
+func LikePost(c *gin.Context) {
+	var userId uint
+	userId = session.GetUserID(c)
+
+	if userId == 0 {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Unauthorized",
+		})
+		return
+	}
+
+	postId := c.Param("post_id")
+
+	var post model.Post
+	db_conn := db.GetConnection()
+	result := db_conn.Where("id = ?", postId).First(&post)
+
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Post not found",
+		})
+		return
+	} else if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Internal Server Error",
+		})
+		return
+	}
+
+	db_conn.Create(&model.Like{
+		UserID: userId,
+		PostID: post.ID,
+	})
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Like post success",
+	})
+}
+
+func UnLikePost(c *gin.Context) {
+	var userId uint
+	userId = session.GetUserID(c)
+
+	if userId == 0 {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Unauthorized",
+		})
+		return
+	}
+
+	postId := c.Param("post_id")
+
+	var post model.Post
+	db_conn := db.GetConnection()
+	result := db_conn.Where("id = ?", postId).First(&post)
+
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Post not found",
+		})
+		return
+	} else if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Internal Server Error",
+		})
+		return
+	}
+
+	db_conn.Where("user_id = ? AND post_id = ?", userId, post.ID).Delete(&model.Like{})
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Unlike post success",
+	})
 }

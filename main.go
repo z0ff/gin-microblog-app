@@ -9,9 +9,9 @@ import (
 	"os"
 
 	"github.com/z0ff/microblog-backend/db"
-	"github.com/z0ff/microblog-backend/db/model"
 	"github.com/z0ff/microblog-backend/handler"
 	"github.com/z0ff/microblog-backend/utils/session"
+	"github.com/z0ff/microblog-backend/service"
 )
 
 type Post struct {
@@ -52,7 +52,7 @@ func main() {
 	}))
 
 	engine.GET("/", func(c *gin.Context) {
-		var posts []model.Post
+		var posts []service.PostWithIsLiked
 		var followings []uint
 
 		// ユーザーIDをセッションから取得
@@ -69,8 +69,10 @@ func main() {
 		db_conn.Table("follows").Select("following_id").Where("user_id = ? AND deleted_at is null", userID).Find(&followings)
 		followings = append(followings, userID)
 
-		tx := db_conn.Preload("User").Begin()
-		tx.Order("created_at desc").Where("user_id in ?", followings).Find(&posts)
+		//tx := db_conn.Preload("User").Begin()
+		//tx.Order("created_at desc").Where("user_id in ?", followings).Find(&posts)
+
+		posts, err = service.GetPostsByUserIDs(userID, followings)
 
 		c.JSON(http.StatusOK, posts)
 	})
@@ -88,6 +90,8 @@ func main() {
 	engine.GET("/followers/:username", handler.GetFollowers)
 	engine.GET("/followings/:username", handler.GetFollowings)
 	engine.GET("/is_following/:username", handler.GetIsFollowing)
+	engine.POST("/like/:post_id", handler.LikePost)
+	engine.POST("/unlike/:post_id", handler.UnLikePost)
 
 	engine.Run(":3000")
 }
