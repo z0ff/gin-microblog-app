@@ -10,8 +10,9 @@ import (
 
 	"github.com/z0ff/microblog-backend/db"
 	"github.com/z0ff/microblog-backend/handler"
-	"github.com/z0ff/microblog-backend/utils/session"
+	"github.com/z0ff/microblog-backend/handler/admin_handler"
 	"github.com/z0ff/microblog-backend/service"
+	"github.com/z0ff/microblog-backend/utils/session"
 )
 
 type Post struct {
@@ -92,6 +93,14 @@ func main() {
 	engine.GET("/is_following/:username", handler.GetIsFollowing)
 	engine.POST("/like/:post_id", handler.LikePost)
 	engine.POST("/unlike/:post_id", handler.UnLikePost)
+
+	admin := engine.Group("/admin")
+	{
+		admin.GET("/users", admin_handler.GetUsers)
+		admin.DELETE("/user/:user_id", admin_handler.DeleteUser)
+		admin.GET("/posts", admin_handler.GetPosts)
+		admin.DELETE("/post/:post_id", admin_handler.DeletePost)
+	}
 
 	engine.Run(":3000")
 }
