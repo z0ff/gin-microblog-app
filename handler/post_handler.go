@@ -6,8 +6,8 @@ import (
 	"errors"
 	"github.com/z0ff/microblog-backend/db"
 	"github.com/z0ff/microblog-backend/db/model"
-	"github.com/z0ff/microblog-backend/utils/session"
 	"github.com/z0ff/microblog-backend/service"
+	"github.com/z0ff/microblog-backend/utils/session"
 	"gorm.io/gorm"
 	"log/slog"
 	"net/http"
@@ -73,6 +73,33 @@ func SearchPost(c *gin.Context) {
 	//tx.Order("created_at desc").Where("content LIKE ?", "%"+query+"%").Find(&posts)
 
 	posts, _ := service.SearchPostsByString(userId, query)
+
+	c.JSON(http.StatusOK, posts)
+}
+
+func GetTimeline(c *gin.Context) {
+	var posts []service.PostWithIsLiked
+	var followings []uint
+
+	// ユーザーIDをセッションから取得
+	userID := session.GetUserID(c)
+	// ユーザーIDが取得できない場合、認証エラーを返す
+	if userID == 0 {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Unauthorized",
+		})
+		return
+	}
+
+	db_conn := db.GetConnection()
+	// フォローしているユーザーのIDを取得
+	db_conn.Table("follows").Select("following_id").Where("user_id = ? AND deleted_at is null", userID).Find(&followings)
+	followings = append(followings, userID)
+
+	//tx := db_conn.Preload("User").Begin()
+	//tx.Order("created_at desc").Where("user_id in ?", followings).Find(&posts)
+
+	posts, _ = service.GetPostsByUserIDs(userID, followings)
 
 	c.JSON(http.StatusOK, posts)
 }

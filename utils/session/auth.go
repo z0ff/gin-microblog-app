@@ -17,3 +17,15 @@ func GetUserID(c *gin.Context) uint {
 	}
 	return userID.(uint)
 }
+
+func GetAdminID(c *gin.Context) uint {
+	session := sessions.Default(c)
+	if session == nil {
+		panic("session is nil")
+	}
+	adminID := session.Get("admin_id")
+	if adminID == nil {
+		return 0
+	}
+	return adminID.(uint)
+}

@@ -5,14 +5,11 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"os"
 
 	"github.com/z0ff/microblog-backend/db"
 	"github.com/z0ff/microblog-backend/handler"
 	"github.com/z0ff/microblog-backend/handler/admin_handler"
-	"github.com/z0ff/microblog-backend/service"
-	"github.com/z0ff/microblog-backend/utils/session"
 )
 
 type Post struct {
@@ -22,8 +19,10 @@ type Post struct {
 
 func main() {
 	// DB接続
-	database, _ := db.NewDatabase()
-	db_conn := database.Connection
+	_, err := db.NewDatabase()
+	if err != nil {
+		return
+	}
 
 	engine := gin.Default()
 
@@ -41,7 +40,7 @@ func main() {
 
 	engine.Use(cors.New(cors.Config{
 		// アクセスを許可するアクセス元
-		AllowOrigins: []string{"http://localhost:5173"},
+		AllowOrigins: []string{"http://localhost:5173", "http://localhost:5174"},
 		// アクセスを許可するHTTPメソッド
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		// 許可するHTTPリクエストヘッダ
@@ -52,31 +51,7 @@ func main() {
 		MaxAge: 24 * 3600,
 	}))
 
-	engine.GET("/", func(c *gin.Context) {
-		var posts []service.PostWithIsLiked
-		var followings []uint
-
-		// ユーザーIDをセッションから取得
-		userID := session.GetUserID(c)
-		// ユーザーIDが取得できない場合、認証エラーを返す
-		if userID == 0 {
-			c.JSON(http.StatusUnauthorized, gin.H{
-				"error": "Unauthorized",
-			})
-			return
-		}
-
-		// フォローしているユーザーのIDを取得
-		db_conn.Table("follows").Select("following_id").Where("user_id = ? AND deleted_at is null", userID).Find(&followings)
-		followings = append(followings, userID)
-
-		//tx := db_conn.Preload("User").Begin()
-		//tx.Order("created_at desc").Where("user_id in ?", followings).Find(&posts)
-
-		posts, err = service.GetPostsByUserIDs(userID, followings)
-
-		c.JSON(http.StatusOK, posts)
-	})
+	engine.GET("/", handler.GetTimeline)
 	engine.POST("/post", handler.CreatePost)
 	engine.GET("/search", handler.SearchPost)
 	engine.POST("/login", handler.Login)
@@ -97,9 +72,19 @@ func main() {
 	admin := engine.Group("/admin")
 	{
 		admin.GET("/users", admin_handler.GetUsers)
+		admin.GET("/user/:user_id", admin_handler.GetUser)
 		admin.DELETE("/user/:user_id", admin_handler.DeleteUser)
 		admin.GET("/posts", admin_handler.GetPosts)
 		admin.DELETE("/post/:post_id", admin_handler.DeletePost)
+
+		auth := admin.Group("/auth")
+		{
+			auth.POST("/login", admin_handler.Login)
+			auth.POST("/logout", admin_handler.Logout)
+			auth.GET("/is_logged_in", admin_handler.GetIsLoggedIn)
+			auth.POST("/signup", admin_handler.Signup)
+			auth.GET("/me", admin_handler.GetMe)
+		}
 	}
 
 	engine.Run(":3000")

@@ -40,7 +40,14 @@ func NewDatabase() (*Database, error) {
 		panic("failed to connect database")
 	}
 
-	err = db_conn.AutoMigrate(&model.User{}, &model.Post{}, &model.Follow{}, &model.Like{})
+	err = db_conn.AutoMigrate(
+		&model.User{},
+		&model.Post{},
+		&model.Follow{},
+		&model.Like{},
+		&model.Admin{},
+		&model.AdminAuth{},
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -49,6 +56,10 @@ func NewDatabase() (*Database, error) {
 	var count int64
 	if db_conn.Model(&model.User{}).Count(&count); count == 0 {
 		seeder.UserSeeder(db_conn)
+	}
+
+	if db_conn.Model(&model.Admin{}).Count(&count); count == 0 {
+		seeder.AdminSeeder(db_conn)
 	}
 
 	connection = db_conn
