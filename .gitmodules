@@ -1,3 +1,0 @@
-[submodule "microblog-backend"]
-	path = microblog-backend
-	url = git@github.com:z0ff/microblog-backend.git

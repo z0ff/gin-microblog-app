@@ -5,54 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eeeb8fd1-725d-482f-be28-bf228bb48ebd" name="変更" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.dockerignore" beforeDir="false" afterPath="$PROJECT_DIR$/web/.dockerignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/web/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/web/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/web/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/web/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/web/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/web/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.idea/prettier.xml" beforeDir="false" afterPath="$PROJECT_DIR$/web/.idea/prettier.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.idea/svelte-frontend-study.iml" beforeDir="false" afterPath="$PROJECT_DIR$/web/.idea/svelte-frontend-study.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.npmrc" beforeDir="false" afterPath="$PROJECT_DIR$/web/.npmrc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.prettierignore" beforeDir="false" afterPath="$PROJECT_DIR$/web/.prettierignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.prettierrc" beforeDir="false" afterPath="$PROJECT_DIR$/web/.prettierrc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/web/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/web/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/eslint.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/eslint.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/playwright.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/playwright.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/web/pnpm-lock.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/postcss.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/postcss.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/app.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/app.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/app.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/app.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/index.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/index.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/lib/Components/Post.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/lib/Components/Post.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/lib/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/lib/auth.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/lib/datetime.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/lib/datetime.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/lib/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/lib/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/lib/posts.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/lib/posts.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/lib/stores.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/lib/stores.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/lib/types.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/lib/types.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/lib/users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/lib/users.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/routes/+layout.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/routes/+layout.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/routes/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/routes/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/routes/@[username]/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/routes/@[username]/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/routes/@[username]/+page.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/routes/@[username]/+page.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/routes/login/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/routes/login/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/routes/search/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/routes/search/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/routes/signup/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/routes/signup/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/routes/usersearch/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/routes/usersearch/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/favicon.png" beforeDir="false" afterPath="$PROJECT_DIR$/web/static/favicon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/svelte.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/svelte.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/tailwind.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/tests/test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/tests/test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/vite.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
