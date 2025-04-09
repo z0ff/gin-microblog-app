@@ -34,7 +34,26 @@ func Login(c *gin.Context) {
 	var user model.User
 	db_conn.Where("email = ?", loginUser.Email).First(&user)
 
-	if !crypto.ComparePassword(user.Password, loginUser.Password) {
+	// ユーザーが存在しない場合エラーを返す
+	if user.ID == 0 {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Invalid email or password",
+		})
+		return
+	}
+
+	// ユーザーが休止中の場合エラーを返す
+	if user.SuspendedAt != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "User is suspended",
+		})
+		return
+	}
+
+	var userAuth model.UserAuth
+	db_conn.Where("user_id = ?", user.ID).First(&userAuth)
+
+	if !crypto.ComparePassword(userAuth.Password, loginUser.Password) {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "Invalid email or password",
 		})
@@ -79,11 +98,16 @@ func Signup(c *gin.Context) {
 
 	db_conn := db.GetConnection()
 	pw_hash, _ := crypto.HashPassword(signupUser.Password)
-	db_conn.Create(&model.User{
+
+	user := model.User{
 		Name:        signupUser.Name,
 		DisplayName: signupUser.DisplayName,
 		Email:       signupUser.Email,
-		Password:    pw_hash,
+	}
+	db_conn.Create(&user)
+	db_conn.Create(&model.UserAuth{
+		UserID:   user.ID,
+		Password: pw_hash,
 	})
 
 	c.JSON(http.StatusOK, gin.H{

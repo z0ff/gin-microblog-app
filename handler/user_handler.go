@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/z0ff/microblog-backend/db"
 	"github.com/z0ff/microblog-backend/db/model"
+	"github.com/z0ff/microblog-backend/service"
 	session_mgr "github.com/z0ff/microblog-backend/utils/session"
 	"gorm.io/gorm"
 	"net/http"
@@ -56,6 +57,24 @@ func GetUserInfo(c *gin.Context) {
 		"name":         user.Name,
 		"display_name": user.DisplayName,
 	})
+}
+
+func SearchUser(c *gin.Context) {
+	// 検索クエリを取得
+	query := c.Query("query")
+
+	userId := session_mgr.GetUserID(c)
+
+	if userId == 0 {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Unauthorized",
+		})
+		return
+	}
+
+	users, _ := service.SearchUsersByDisplayName(userId, query)
+
+	c.JSON(http.StatusOK, users)
 }
 
 func FollowUser(c *gin.Context) {

@@ -14,14 +14,23 @@ func UserSeeder(db *gorm.DB) {
 			Name:        "john123",
 			DisplayName: "John",
 			Email:       "john@example.com",
-			Password:    pw_hash,
+		},
+	}
+	user_auths := []model.UserAuth{
+		{
+			UserID:   1,
+			Password: pw_hash,
 		},
 	}
 
+	db.Exec("DELETE from user_auths")
 	db.Exec("DELETE from users")
 	db.Exec("ALTER TABLE users auto_increment = 1")
 
 	for _, user := range users {
 		db.Create(&user)
+	}
+	for _, user_auth := range user_auths {
+		db.Create(&user_auth)
 	}
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/z0ff/microblog-backend/db"
 	"github.com/z0ff/microblog-backend/db/model"
 	"net/http"
+	"time"
 )
 
 type User struct {
@@ -15,6 +16,7 @@ type User struct {
 	CreatedAt   string `json:"createdAt"`
 	UpdatedAt   string `json:"updatedAt"`
 	DeletedAt   string `json:"deletedAt"`
+	SuspendedAt string `json:"suspendedAt"`
 }
 
 func GetUsers(c *gin.Context) {
@@ -52,5 +54,63 @@ func DeleteUser(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "User deleted",
+	})
+}
+
+func SuspendUser(c *gin.Context) {
+	userID := c.Param("user_id")
+
+	db_conn := db.GetConnection()
+	var user model.User
+	result := db_conn.Where("id = ?", userID).First(&user)
+
+	if result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "User not found",
+		})
+		return
+	}
+
+	if user.SuspendedAt != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "User is already suspended",
+		})
+		return
+	}
+
+	now := time.Now()
+	user.SuspendedAt = &now
+	result = db_conn.Save(&user)
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "User suspended",
+	})
+}
+func ResumeUser(c *gin.Context) {
+	userID := c.Param("user_id")
+
+	db_conn := db.GetConnection()
+	var user model.User
+	result := db_conn.Where("id = ?", userID).First(&user)
+
+	if result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "User not found",
+		})
+		return
+	}
+
+	if user.SuspendedAt == nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "User is not suspended",
+		})
+		return
+	}
+
+	user.SuspendedAt = nil
+	result = db_conn.Save(&user)
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "User resumed",
 	})
 }

@@ -4,16 +4,31 @@ import (
 	//"gorm.io/gorm"
 
 	"github.com/z0ff/microblog-backend/db"
-	"github.com/z0ff/microblog-backend/db/model"
+	//"github.com/z0ff/microblog-backend/db/model"
 )
 
+type User struct {
+	ID          uint   `json:"id"`
+	Name        string `json:"name"`
+	DisplayName string `json:"display_name"`
+	Email       string `json:"email"`
+}
+
+type Post struct {
+	ID        uint   `json:"id"`
+	UserID    uint   `json:"user_id"`
+	User      User   `json:"user"`
+	Content   string `json:"content"`
+	CreatedAt string `json:"createdAt"`
+}
+
 type PostWithIsLiked struct {
-	model.Post
-	IsLiked bool
+	Post
+	IsLiked bool `json:"is_liked"`
 }
 
 func GetPosts(currentUserID uint, targetUserID uint) ([]PostWithIsLiked, error) {
-	var posts []model.Post
+	var posts []Post
 
 	db_conn := db.GetConnection()
 	tx := db_conn.Preload("User").Begin()
@@ -31,7 +46,7 @@ func GetPosts(currentUserID uint, targetUserID uint) ([]PostWithIsLiked, error) 
 }
 
 func GetPostsByUserIDs(currentUserID uint, targetUserIDs []uint) ([]PostWithIsLiked, error) {
-	var posts []model.Post
+	var posts []Post
 
 	db_conn := db.GetConnection()
 	tx := db_conn.Preload("User").Begin()
@@ -49,7 +64,7 @@ func GetPostsByUserIDs(currentUserID uint, targetUserIDs []uint) ([]PostWithIsLi
 }
 
 func SearchPostsByString(currentUserID uint, searchStr string) ([]PostWithIsLiked, error) {
-	var posts []model.Post
+	var posts []Post
 
 	db_conn := db.GetConnection()
 	tx := db_conn.Preload("User").Begin()

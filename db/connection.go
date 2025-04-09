@@ -42,6 +42,7 @@ func NewDatabase() (*Database, error) {
 
 	err = db_conn.AutoMigrate(
 		&model.User{},
+		&model.UserAuth{},
 		&model.Post{},
 		&model.Follow{},
 		&model.Like{},

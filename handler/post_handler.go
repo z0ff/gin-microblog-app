@@ -66,11 +66,6 @@ func SearchPost(c *gin.Context) {
 		})
 		return
 	}
-	//followings = append(followings, userId)
-	//
-	//db_conn := db.GetConnection()
-	//tx := db_conn.Preload("User").Begin()
-	//tx.Order("created_at desc").Where("content LIKE ?", "%"+query+"%").Find(&posts)
 
 	posts, _ := service.SearchPostsByString(userId, query)
 
@@ -95,9 +90,6 @@ func GetTimeline(c *gin.Context) {
 	// フォローしているユーザーのIDを取得
 	db_conn.Table("follows").Select("following_id").Where("user_id = ? AND deleted_at is null", userID).Find(&followings)
 	followings = append(followings, userID)
-
-	//tx := db_conn.Preload("User").Begin()
-	//tx.Order("created_at desc").Where("user_id in ?", followings).Find(&posts)
 
 	posts, _ = service.GetPostsByUserIDs(userID, followings)
 

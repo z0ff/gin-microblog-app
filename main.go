@@ -40,7 +40,7 @@ func main() {
 
 	engine.Use(cors.New(cors.Config{
 		// アクセスを許可するアクセス元
-		AllowOrigins: []string{"http://localhost:5173", "http://localhost:5174"},
+		AllowOrigins: []string{os.Getenv("APP_ORIGIN"), os.Getenv("ADMIN_ORIGIN")},
 		// アクセスを許可するHTTPメソッド
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		// 許可するHTTPリクエストヘッダ
@@ -60,6 +60,7 @@ func main() {
 	engine.GET("/is_logged_in", handler.GetIsLoggedIn)
 	engine.GET("/me", handler.GetMe)
 	engine.GET("/user/:username", handler.GetUserInfo)
+	engine.GET("/searchuser", handler.SearchUser)
 	engine.GET("/post/:username", handler.GetPostsOfUser)
 	engine.POST("/follow/:username", handler.FollowUser)
 	engine.POST("/unfollow/:username", handler.UnFollowUser)
@@ -74,6 +75,8 @@ func main() {
 		admin.GET("/users", admin_handler.GetUsers)
 		admin.GET("/user/:user_id", admin_handler.GetUser)
 		admin.DELETE("/user/:user_id", admin_handler.DeleteUser)
+		admin.POST("/suspend/:user_id", admin_handler.SuspendUser)
+		admin.POST("/resume/:user_id", admin_handler.ResumeUser)
 		admin.GET("/posts", admin_handler.GetPosts)
 		admin.DELETE("/post/:post_id", admin_handler.DeletePost)
 
