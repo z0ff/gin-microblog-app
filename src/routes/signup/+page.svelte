@@ -41,12 +41,13 @@
     }
 </script>
 
-<h1>Signup</h1>
-<div>
-
-    <input type="text" id="form-name" placeholder="name" on:input={onInput} class="input" />
-    <input type="text" id="form-displayname" placeholder="displayname" on:input={onInput} class="input" />
-    <input type="text" id="form-email" placeholder="e-mail" on:input={onInput} class="input" />
-    <input type="password" id="form-password" placeholder="password" on:input={onInput} class="input" />
-    <button type="button" on:click={onClickSignupButton} disabled="{!loginButtonEnabled}" class="btn btn-primary">signup</button>
+<div class="w-full flex justify-center items-center">
+    <div class="card card-body flex flex-column max-w-sm">
+        <input type="text" id="form-name" placeholder="name" on:input={onInput} class="input" />
+        <input type="text" id="form-displayname" placeholder="displayname" on:input={onInput} class="input" />
+        <input type="text" id="form-email" placeholder="e-mail" on:input={onInput} class="input" />
+        <input type="password" id="form-password" placeholder="password" on:input={onInput} class="input" />
+        <button type="button" on:click={onClickSignupButton} disabled="{!loginButtonEnabled}" class="btn btn-primary">会員登録</button>
+        <a class="btn btn-primary" href="/login">ログイン</a>
+    </div>
 </div>

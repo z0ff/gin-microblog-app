@@ -1,52 +1,40 @@
-<script>
-    import { strToDate } from "$lib/datetime";
-    export let post;
-    const postID = post.ID;
-    let isLiked = post.IsLiked;
+<script lang="ts">
+    import { formatIsoDateStr, strToDate } from "$lib/datetime";
+    import { like, unlike } from "$lib/posts";
+    import type { Post } from "$lib/types";
+
+    export let post: Post;
 
     const onLikeBtnClicked = async () => {
-        const res = await fetch(`http://localhost:3000/like/${postID}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            // fetch APIはデフォルトでセッション情報を送信しないため、
-            // 明示的に送信するように設定する
-            credentials: "include"
-        }).catch(console.error);
-
-        if (res) {
-            console.log(await res.json());
-            isLiked = true;
+        if (await like(post.id)) {
+            post.is_liked = true;
         } else {
-            console.error(res);
+            console.error("Failed to like");
         }
     }
 
-    const onUnLikeBtnClicked = async () => {
-        const res = await fetch(`http://localhost:3000/unlike/${postID}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            // fetch APIはデフォルトでセッション情報を送信しないため、
-            // 明示的に送信するように設定する
-            credentials: "include"
-        }).catch(console.error);
-
-        if (res) {
-            console.log(await res.json());
-            isLiked = false;
+    const onUnlikeBtnClicked = async () => {
+        if (await unlike(post.id)) {
+            post.is_liked = false;
         } else {
-            console.error(res);
+            console.error("Failed to unlike");
         }
     }
 </script>
 <div class="card card-bordered bg-base-50 shadow-lg">
     <div class="card-body">
-        <a href="/@{post.User.Name}"><span class="font-bold">{post.User.DisplayName}</span> @{post.User.Name}</a>
-        <p>{strToDate(post.CreatedAt)}</p>
-        <p class="whitespace-pre-wrap">{post.Content}</p>
-        <button class="btn {isLiked ? 'btn-primary' : 'btn-ghost'}" on:click={isLiked ? onUnLikeBtnClicked : onLikeBtnClicked}>{isLiked ? "Unlike" : "Like"}</button>
+        <div class="flex gap-2">
+            <div class="flex-none">
+                <a href="/@{post.user.name}"><span class="font-bold">{post.user.display_name}</span></a>
+            </div>
+            <div class="flex-1">
+                <a href="/@{post.user.name}">@{post.user.name}</a>
+            </div>
+            <div class ="flex-none">
+                <p>{formatIsoDateStr(post.createdAt, 'yyyy/MM/dd HH:mm')}</p>
+            </div>
+        </div>
+        <p class="whitespace-pre-wrap">{post.content}</p>
+        <button class="btn {post.is_liked ? 'btn-primary' : 'btn-ghost'}" on:click={post.is_liked ? onUnlikeBtnClicked : onLikeBtnClicked}>{post.is_liked ? "いいね解除" : "いいね"}</button>
     </div>
 </div>

@@ -1,7 +1,8 @@
 import type { User } from './types';
+import { PUBLIC_API_ORIGIN } from "$env/static/public";
 
 export const login = async (email: string, password: string): Promise<boolean> => {
-    const res = await fetch('http://localhost:3000/login', {
+    const res = await fetch(`${PUBLIC_API_ORIGIN}/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -22,7 +23,7 @@ export const login = async (email: string, password: string): Promise<boolean> =
 }
 
 export const logout = async (): Promise<boolean> => {
-    const res = await fetch('http://localhost:3000/logout', {
+    const res = await fetch(`${PUBLIC_API_ORIGIN}/logout`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -40,7 +41,7 @@ export const logout = async (): Promise<boolean> => {
 }
 
 export const signup = async (name: string, displayName: string, email: string, password: string): Promise<boolean> => {
-    const res = await fetch('http://localhost:3000/signup', {
+    const res = await fetch(`${PUBLIC_API_ORIGIN}/signup`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -63,7 +64,7 @@ export const signup = async (name: string, displayName: string, email: string, p
 };
 
 export const getMe = async (): Promise<User | null> => {
-    const res = await fetch('http://localhost:3000/me', {
+    const res = await fetch(`${PUBLIC_API_ORIGIN}/me`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -86,7 +87,7 @@ export const getMe = async (): Promise<User | null> => {
 }
 
 export const getUser = async (username: string): Promise<User | null> => {
-    const res = await fetch(`http://localhost:3000/user/${username}`, {
+    const res = await fetch(`${PUBLIC_API_ORIGIN}/user/${username}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

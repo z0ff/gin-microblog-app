@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { strToDate, utcToLocalTime } from "$lib/datetime";
+	import { getTimeline, submitPost } from '$lib/posts';
 	import Post from "$lib/Components/Post.svelte";
-
 
 	let postContent: HTMLTextAreaElement;
 
@@ -14,60 +13,17 @@
 		postContent = document.getElementById('post-content') as HTMLTextAreaElement;
 	});
 
-	const getPosts = async () => {
-		const responseJson = await getPostsJson();
-		if (responseJson.error) {
-			return { error: responseJson.error };
-		}
+	let posts = getTimeline();
 
-		const posts = JSON.parse(responseJson);
-		// console.log(posts);
+	const onClickSubmitBtn = async () => {
+		if (await submitPost(postContent.value.trim())) {
+			postContent.value = "";
+			countPostContentChars();
 
-		return posts;
-	};
-
-	const getPostsJson = async () => {
-		const res = await fetch('http://localhost:3000/', {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			// fetch APIはデフォルトでセッション情報を送信しないため、
-			// 明示的に送信するように設定する
-			credentials: "include"
-		}).catch(console.error);
-
-		if (res) {
-			return await res.json()
+			posts = await getTimeline();
 		} else {
-			return { error: res.statusText };
+			alert("Failed to submit post");
 		}
-	};
-	let posts = getPostsJson();
-	console.log(posts);
-
-	const submitPost = async () => {
-		const res = await fetch('http://localhost:3000/post', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			// fetch APIはデフォルトでセッション情報を送信しないため、
-			// 明示的に送信するように設定する
-			credentials: "include",
-			body: JSON.stringify({ content: postContent.value.trim() }),
-		}).catch(console.error);
-
-		if (res) {
-			console.log(await res.json());
-		} else {
-			console.error(res);
-		}
-
-		postContent.value = "";
-		countPostContentChars();
-
-		posts = await getPostsJson();
 	};
 
 	const toggleEnabledPostButton = () => {
@@ -86,9 +42,13 @@
 
 </script>
 
-<textarea on:input={onInput} rows="10" cols="50" placeholder="type something here" id="post-content" class="textarea textarea-bordered textarea-primary"></textarea>
-<span>{postCharsCount}/500</span>
-<button on:click={submitPost} type="button" id="post-submit" disabled={!postButtonEnabled} class="btn btn-primary">submit</button>
+<div class="max-w-3xl my-4 mx-auto">
+	<textarea rows="5" on:input={onInput} placeholder="今なにしてる？" id="post-content" class="textarea textarea-bordered textarea-primary w-full"></textarea>
+	<div class="flex justify-between items-center">
+		<span class="text-sm text-gray-500">{postCharsCount}/500</span>
+		<button on:click={onClickSubmitBtn} type="button" id="post-submit" disabled={!postButtonEnabled} class="btn btn-primary">投稿</button>
+	</div>
+</div>
 
 {#await posts}
 	<p>loading...</p>
