@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getUsers, deleteUser } from "$lib/users";
+  import { getUsers, deleteUser, suspendUser, resumeUser } from "$lib/users";
     import type { User } from "$lib/types";
 
     let users: Promise<User[]>;
@@ -15,7 +15,6 @@
       <th>ユーザー名</th>
       <th>ユーザー表示名</th>
       <th>作成日時</th>
-      <th>更新日時</th>
         <th>ステータス</th>
         <th>操作</th>
     </tr>
@@ -30,17 +29,25 @@
         <td>{user.name}</td>
             <td>{user.display_name}</td>
             <td>{user.createdAt}</td>
-            <td>{user.updatedAt}</td>
             <td>
                 {user.deletedAt}
                 {#if user.deletedAt}
                     削除済み
+                {:else if user.suspendedAt}
+                    停止中
                 {:else}
                     有効
                 {/if}
             </td>
             <td>
 <!--                <a class="btn btn-primary" href="/users/{user.id}">詳細</a>-->
+                {#if user.deletedAt}
+                    <button class="btn btn-disabled">停止</button>
+                {:else if user.suspendedAt}
+                    <button class="btn btn-primary" on:click="{() => {resumeUser(user.id)}}">復帰</button>
+                {:else}
+                    <button class="btn btn-primary" on:click="{() => {suspendUser(user.id)}}">停止</button>
+                {/if}
                 {#if user.deletedAt}
                     <button class="btn btn-disabled">削除</button>
                 {:else}

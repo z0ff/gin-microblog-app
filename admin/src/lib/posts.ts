@@ -1,7 +1,8 @@
 import type { Post } from '$lib/types';
+import { PUBLIC_API_ORIGIN } from "$env/static/public";
 
 export const getPosts = async (): Promise<Post[]> => {
-    let url = "http://localhost:3000/admin/posts";
+    const url = PUBLIC_API_ORIGIN + "/admin/posts";
 
     const res = await fetch(url, {
         method: "GET",
@@ -28,7 +29,7 @@ export const getPosts = async (): Promise<Post[]> => {
 
 export const deletePost = async (id: number) => {
     if (confirm("本当に削除しますか？")) {
-        await fetch(`http://localhost:3000/admin/post/${id}`, {
+        await fetch(`${PUBLIC_API_ORIGIN}/admin/post/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

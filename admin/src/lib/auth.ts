@@ -1,7 +1,8 @@
 import type { Admin } from "$lib/types";
+import { PUBLIC_API_ORIGIN } from "$env/static/public";
 
 export const login = async (email: string, password: string): Promise<Admin | null> => {
-    let url = "http://localhost:3000/admin/auth/login";
+    const url = PUBLIC_API_ORIGIN + "/admin/auth/login";
 
     const res = await fetch(url, {
         method: "POST",
@@ -28,7 +29,7 @@ export const login = async (email: string, password: string): Promise<Admin | nu
 }
 
 export const logout = async (): Promise<boolean> => {
-    let url = "http://localhost:3000/admin/auth/logout";
+    const url = PUBLIC_API_ORIGIN + "/admin/auth/logout";
 
     const res = await fetch(url, {
         method: "POST",
@@ -54,7 +55,7 @@ export const logout = async (): Promise<boolean> => {
 }
 
 export const signup = async (name: string, email: string, password: string): Promise<Admin | null> => {
-    let url = "http://localhost:3000/admin/auth/signup";
+    const url = PUBLIC_API_ORIGIN + "/admin/auth/signup";
 
     const res = await fetch(url, {
         method: "POST",
@@ -81,7 +82,7 @@ export const signup = async (name: string, email: string, password: string): Pro
 }
 
 export const isLoggedIn = async (): Promise<Admin | null> => {
-    let url = "http://localhost:3000/admin/auth/is_logged_in";
+    const url = PUBLIC_API_ORIGIN + "/admin/auth/is_logged_in";
 
     const res = await fetch(url, {
         method: "GET",
@@ -107,7 +108,7 @@ export const isLoggedIn = async (): Promise<Admin | null> => {
 }
 
 export const getMe = async (): Promise<Admin | null> => {
-    let url = "http://localhost:3000/admin/auth/me";
+    const url = PUBLIC_API_ORIGIN + "/admin/auth/me";
 
     const res = await fetch(url, {
         method: "GET",

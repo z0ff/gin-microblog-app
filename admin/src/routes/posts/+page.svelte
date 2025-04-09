@@ -12,7 +12,6 @@
         <th>ユーザーID</th>
         <th>本文</th>
         <th>作成日時</th>
-        <th>更新日時</th>
         <th>操作</th>
     </tr>
     </thead>
@@ -26,7 +25,6 @@
                 <td><a href="/users/{post.user_id}">{post.user_id}</a></td>
                 <td>{post.content}</td>
                 <td>{post.createdAt}</td>
-                <td>{post.updatedAt}</td>
                 <td>
                     {#if post.deletedAt}
                         <button class="btn btn-disabled">削除</button>

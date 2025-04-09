@@ -1,7 +1,8 @@
 import type {User} from "$lib/types";
+import { PUBLIC_API_ORIGIN } from "$env/static/public";
 
 export const getUsers = async (name: string|null = null): Promise<User[]> => {
-    let url = "http://localhost:3000/admin/users";
+    const url = PUBLIC_API_ORIGIN + "/admin/users";
 
     const res = await fetch(url, {
         method: "GET",
@@ -27,7 +28,7 @@ export const getUsers = async (name: string|null = null): Promise<User[]> => {
 };
 
 export const getUserDetails = async (id: number): Promise<User | null> => {
-    let url = `http://localhost:3000/admin/user/${id}`;
+    const url = `${PUBLIC_API_ORIGIN}/admin/user/${id}`;
 
     const res = await fetch(url, {
         method: "GET",
@@ -54,7 +55,7 @@ export const getUserDetails = async (id: number): Promise<User | null> => {
 
 export const deleteUser = async (id: number) => {
     if (confirm("本当に削除しますか？")) {
-        await fetch(`http://localhost:3000/admin/user/${id}`, {
+        await fetch(`${PUBLIC_API_ORIGIN}/admin/user/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -68,4 +69,37 @@ export const deleteUser = async (id: number) => {
             }
         }).catch(console.error);
     }
+};
+export const suspendUser = async (id: number) => {
+    if (confirm("本当に停止しますか？")) {
+        await fetch(`${PUBLIC_API_ORIGIN}/admin/suspend/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: "include"
+        }).then(res => {
+            if (res.status === 200) {
+                location.reload();
+            } else {
+                alert("停止に失敗しました");
+            }
+        }).catch(console.error);
+    }
+};
+
+export const resumeUser = async (id: number) => {
+    await fetch(`${PUBLIC_API_ORIGIN}/admin/resume/${id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: "include"
+    }).then(res => {
+        if (res.status === 200) {
+            location.reload();
+        } else {
+            alert("停止に失敗しました");
+        }
+    }).catch(console.error);
 };

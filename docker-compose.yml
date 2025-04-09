@@ -1,6 +1,6 @@
 version: '3'
 services:
-  sveltekit:
+  web:
     container_name: web
     build: ./microblog-web # SvelteKit アプリケーションのディレクトリ
     ports:
@@ -9,10 +9,11 @@ services:
       - ./microblog-web/:/app # 開発時のホットリロード用
       - node_modules:/app/node_modules # node_modulesをボリューム側に配置することにより速度改善
     depends_on:
-      - gin # Gin が起動するまで待つ
+      - backend # backend が起動するまで待つ
+    environment:
+      - PUBLIC_API_ORIGIN=http://localhost:3000 # API のオリジン
     command: bash -c "npm run dev"
     tty: true
-    # restart: on-failure
 
   admin:
     container_name: admin
@@ -23,12 +24,13 @@ services:
       - ./admin/:/app # 開発時のホットリロード用
       - node_modules_admin:/app/node_modules # node_modulesをボリューム側に配置することにより速度改善
     depends_on:
-      - gin # Gin が起動するまで待つ
+      - backend # backend が起動するまで待つ
+    environment:
+      - PUBLIC_API_ORIGIN=http://localhost:3000 # API のオリジン
     command: bash -c "npm run dev"
     tty: true
-    # restart: on-failure
 
-  gin:
+  backend:
     container_name: backend
     build: ./microblog-backend # Gin アプリケーションのディレクトリ
     ports:
@@ -47,6 +49,8 @@ services:
       - REDIS_PORT=6379 # Redis のポート
       - REDIS_PASSWORD= # Redis のパスワード
       - REDIS_SECRET=secret # Redis のシークレットキー
+      - APP_ORIGIN=http://localhost:5173 # アプリケーションのオリジン
+      - ADMIN_ORIGIN=http://localhost:5174 # 管理画面のオリジン
     command: bash -c "go mod tidy && air"
     tty: true
 

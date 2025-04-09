@@ -7,6 +7,7 @@ export type User = {
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date | null;
+    suspendedAt: Date | null;
 }
 
 export type Post = {
