@@ -2,11 +2,11 @@ version: '3'
 services:
   web:
     container_name: web
-    build: ./microblog-web # SvelteKit アプリケーションのディレクトリ
+    build: ./web # SvelteKit アプリケーションのディレクトリ
     ports:
       - '5173:5173' # SvelteKit の開発サーバーのポート
     volumes:
-      - ./microblog-web/:/app # 開発時のホットリロード用
+      - ./web/:/app # 開発時のホットリロード用
       - node_modules:/app/node_modules # node_modulesをボリューム側に配置することにより速度改善
     depends_on:
       - backend # backend が起動するまで待つ
@@ -32,11 +32,11 @@ services:
 
   backend:
     container_name: backend
-    build: ./microblog-backend # Gin アプリケーションのディレクトリ
+    build: ./backend # Gin アプリケーションのディレクトリ
     ports:
       - '3000:3000' # Gin のサーバーのポート
     volumes:
-      - ./microblog-backend/:/app
+      - ./backend/:/app
     depends_on:
       - mysql # MySQL が起動するまで待つ
       - redis # Redis が起動するまで待つ

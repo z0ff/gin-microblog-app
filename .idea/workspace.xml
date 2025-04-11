@@ -5,47 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eeeb8fd1-725d-482f-be28-bf228bb48ebd" name="変更" comment="">
-      <change afterPath="$PROJECT_DIR$/microblog-backend/db/model/user_auth.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microblog-backend/service/user_service.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microblog-web/src/lib/users.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microblog-web/src/routes/usersearch/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/lib/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/lib/auth.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/lib/posts.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/lib/posts.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/lib/types.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/lib/types.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/lib/users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/lib/users.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/routes/posts/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/routes/posts/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/routes/users/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/routes/users/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-backend" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-backend" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-backend/db/connection.go" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-backend/db/connection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-backend/db/model/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-backend/db/model/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-backend/db/seeder/user_seeder.go" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-backend/db/seeder/user_seeder.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-backend/handler/admin_handler/user_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-backend/handler/admin_handler/user_handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-backend/handler/login_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-backend/handler/login_handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-backend/handler/post_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-backend/handler/post_handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-backend/handler/user_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-backend/handler/user_handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-backend/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-backend/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-backend/service/post_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-backend/service/post_service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-backend/tmp/air.log" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-backend/tmp/air.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-backend/tmp/main" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-backend/tmp/main" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-web" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-web/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-web/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web/src/lib/Components/Post.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-web/src/lib/Components/Post.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web/src/lib/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-web/src/lib/auth.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web/src/lib/datetime.ts" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-web/src/lib/datetime.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web/src/lib/posts.ts" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-web/src/lib/posts.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web/src/lib/types.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-web/src/lib/types.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web/src/routes/+layout.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-web/src/routes/+layout.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web/src/routes/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-web/src/routes/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web/src/routes/@[username]/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-web/src/routes/@[username]/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web/src/routes/@[username]/+page.ts" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-web/src/routes/@[username]/+page.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web/src/routes/login/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-web/src/routes/login/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web/src/routes/profile/+page.svelte" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web/src/routes/search/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-web/src/routes/search/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog-web/src/routes/signup/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/microblog-web/src/routes/signup/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/handler/user_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/backend/handler/user_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/service/post_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/backend/service/post_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/service/user_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/backend/service/user_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tmp/main" beforeDir="false" afterPath="$PROJECT_DIR$/backend/tmp/main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/utils/session/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/backend/utils/session/auth.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +30,7 @@
   </component>
   <component name="GOROOT" url="file://$USER_HOME$/.asdf/installs/golang/1.23.0/go" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/microblog-backend" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
@@ -82,6 +48,7 @@
   "keyToString": {
     "DefaultGoTemplateProperty": "Go File",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
     "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
@@ -109,7 +76,7 @@
       <window_info id="Commit_Guest" show_stripe_button="false" />
       <window_info id="Pull Requests" />
       <window_info id="Learn" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10286458" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15972222" />
       <window_info id="Commit" order="1" weight="0.25" />
       <window_info active="true" x="4162" y="-385" width="740" height="533" id="Welcome to GitHub Copilot" order="2" show_stripe_button="false" type="FLOATING" weight="0.24212962" />
       <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
@@ -121,7 +88,7 @@
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="Problems" order="1" />
       <window_info anchor="bottom" id="Problems View" order="2" weight="0.31959262" />
-      <window_info anchor="bottom" id="Terminal" order="3" weight="0.22722869" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.17494658" />
       <window_info anchor="bottom" id="Services" order="4" />
       <window_info anchor="right" id="Endpoints" />
       <window_info anchor="right" id="make" side_tool="true" />
@@ -129,10 +96,10 @@
       <window_info anchor="right" id="Coverage" side_tool="true" />
       <window_info anchor="right" id="Notifications" order="0" weight="0.3300926" />
       <window_info anchor="right" id="AIAssistant" order="1" weight="0.25" />
-      <window_info anchor="right" id="Database" order="2" weight="0.4226852" />
+      <window_info anchor="right" id="Database" order="2" weight="0.3300926" />
       <window_info anchor="right" id="Gradle" order="3" weight="0.25" />
       <window_info anchor="right" id="Maven" order="4" weight="0.25" />
-      <window_info anchor="right" id="github.copilotToolWindow" order="5" sideWeight="0.49938422" weight="0.32984102" />
+      <window_info anchor="right" id="github.copilotToolWindow" order="5" sideWeight="0.49938422" weight="0.3300926" />
       <window_info anchor="right" id="GitHub Copilot Chat" order="6" weight="0.32984102" />
     </layout>
   </component>
@@ -162,7 +129,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/microblog-web/src/lib/Components/Post.svelte</url>
           <line>1</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
