@@ -22,7 +22,25 @@ func GetMe(c *gin.Context) {
 
 	db_conn := db.GetConnection()
 	var user model.User
-	db_conn.Where("id = ?", userID).First(&user)
+	db_conn.Debug().Where("id = ?", userID).First(&user)
+
+	// ユーザーが存在しない場合、ログアウトし404エラーを返す
+	if user.ID == 0 {
+		session_mgr.DeleteUserID(c)
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "User not found",
+		})
+		return
+	}
+
+	// ユーザーが停止中の場合、ログアウトし403エラーを返す
+	if user.SuspendedAt != nil {
+		session_mgr.DeleteUserID(c)
+		c.JSON(http.StatusForbidden, gin.H{
+			"error": "User suspended",
+		})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"user_id":      user.ID,

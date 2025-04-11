@@ -18,6 +18,18 @@ func GetUserID(c *gin.Context) uint {
 	return userID.(uint)
 }
 
+// ユーザーIDをセッションから削除
+func DeleteUserID(c *gin.Context) {
+	session := sessions.Default(c)
+	if session == nil {
+		panic("session is nil")
+	}
+	// セッションからユーザーIDを削除
+	session.Delete("user_id")
+	// セッションの保存
+	session.Save()
+}
+
 func GetAdminID(c *gin.Context) uint {
 	session := sessions.Default(c)
 	if session == nil {

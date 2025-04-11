@@ -4,7 +4,7 @@ import (
 	//"gorm.io/gorm"
 
 	"github.com/z0ff/microblog-backend/db"
-	//"github.com/z0ff/microblog-backend/db/model"
+	"github.com/z0ff/microblog-backend/db/model"
 )
 
 type User struct {
@@ -32,7 +32,7 @@ func GetPosts(currentUserID uint, targetUserID uint) ([]PostWithIsLiked, error) 
 
 	db_conn := db.GetConnection()
 	tx := db_conn.Preload("User").Begin()
-	tx.Order("created_at desc").Where("user_id = ?", targetUserID).Find(&posts)
+	tx.Model(&model.Post{}).Order("created_at desc").Where("user_id = ?", targetUserID).Find(&posts)
 
 	postsWithIsLiked := []PostWithIsLiked{}
 	for _, post := range posts {
@@ -50,7 +50,7 @@ func GetPostsByUserIDs(currentUserID uint, targetUserIDs []uint) ([]PostWithIsLi
 
 	db_conn := db.GetConnection()
 	tx := db_conn.Preload("User").Begin()
-	tx.Order("created_at desc").Where("user_id in ?", targetUserIDs).Find(&posts)
+	tx.Model(&model.Post{}).Order("created_at desc").Where("user_id in ?", targetUserIDs).Find(&posts)
 
 	postsWithIsLiked := []PostWithIsLiked{}
 	for _, post := range posts {
@@ -68,7 +68,7 @@ func SearchPostsByString(currentUserID uint, searchStr string) ([]PostWithIsLike
 
 	db_conn := db.GetConnection()
 	tx := db_conn.Preload("User").Begin()
-	tx.Order("created_at desc").Where("content like ?", "%"+searchStr+"%").Find(&posts)
+	tx.Model(&model.Post{}).Order("created_at desc").Where("content like ?", "%"+searchStr+"%").Find(&posts)
 
 	postsWithIsLiked := []PostWithIsLiked{}
 	for _, post := range posts {

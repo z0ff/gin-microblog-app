@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/z0ff/microblog-backend/db"
+	"github.com/z0ff/microblog-backend/db/model"
 )
 
 type UserWithIsFollowed struct {
@@ -13,7 +14,7 @@ func SearchUsersByDisplayName(currentUserID uint, searchStr string) ([]UserWithI
 	var users []User
 
 	db_conn := db.GetConnection()
-	db_conn.Order("created_at desc").Where("display_name like ?", "%"+searchStr+"%").Find(&users)
+	db_conn.Model(&model.User{}).Order("created_at desc").Where("display_name like ?", "%"+searchStr+"%").Find(&users)
 
 	usersWithIsFollowed := []UserWithIsFollowed{}
 	for _, user := range users {
